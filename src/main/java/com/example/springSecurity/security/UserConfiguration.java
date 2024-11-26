@@ -7,8 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
-import static com.example.springSecurity.security.ApplicationUserRole.ADMIN;
-import static com.example.springSecurity.security.ApplicationUserRole.STUDENT;
+import static com.example.springSecurity.security.ApplicationUserRole.*;
 
 @Configuration
 public class UserConfiguration {
@@ -23,13 +22,21 @@ public class UserConfiguration {
         var annasmithUser  = User.builder()
                 .username("annasmith")
                 .password(passwordEncoder.encode("password"))
-                .roles(STUDENT.name()).build();
+                //.roles(STUDENT.name()).build(); //ROLE_STUDENT
+                .authorities(STUDENT.getGrantedAuthority()).build();
 
         var lindaUser  = User.builder()
                 .username("linda")
                 .password(passwordEncoder.encode("password123"))
-                .roles(ADMIN.name()).build();
+                //.roles(ADMIN.name()).build(); //ROLE_ADMIN
+                .authorities(ADMIN.getGrantedAuthority()).build();
 
-        return new InMemoryUserDetailsManager(annasmithUser,lindaUser);
+        var tomUser  = User.builder()
+                .username("tom")
+                .password(passwordEncoder.encode("password123"))
+               // .roles(ADMINTRAINEE.name()).build(); //ROLE_ADMINTRAINEE
+                .authorities(ADMINTRAINEE.getGrantedAuthority()).build();
+
+        return new InMemoryUserDetailsManager(annasmithUser,lindaUser,tomUser);
     }
 }
