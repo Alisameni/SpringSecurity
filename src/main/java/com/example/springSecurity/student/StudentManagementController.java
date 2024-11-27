@@ -16,7 +16,7 @@ public class StudentManagementController {
             new Student(3,"Anna Smith")
     );
 
-    //another way to implement permission based authentication is used of @PreAuthorize
+    //another way to implement permission based authentication is use of @PreAuthorize
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ADMINTRAINEE')")
     public List<Student> getAllStudents(){

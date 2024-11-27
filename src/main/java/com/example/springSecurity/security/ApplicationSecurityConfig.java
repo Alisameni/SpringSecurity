@@ -7,6 +7,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import static com.example.springSecurity.security.ApplicationUserPermission.*;
 import static com.example.springSecurity.security.ApplicationUserRole.*;
@@ -22,17 +24,23 @@ public class ApplicationSecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "index.html", "/css/*", "/js/*").permitAll()
+                        .requestMatchers("/", "/css/*", "/js/*").permitAll()
                         .requestMatchers("/api/**").hasRole(STUDENT.name())
-                        //requestMatcher is one of the way  to implement permission based authentication
-                        //another way to implement permission based authentication is use of @PreAuthorize in controller
-//                        .requestMatchers(HttpMethod.DELETE,"/management/api/**").hasAuthority(COURSE_WRITE.getPermission())
-//                        .requestMatchers(HttpMethod.POST,"/management/api/**").hasAuthority(COURSE_WRITE.getPermission())
-//                        .requestMatchers(HttpMethod.PUT,"/management/api/**").hasAuthority(COURSE_WRITE.getPermission())
-//                        .requestMatchers(HttpMethod.GET,"/management/api/**").hasAnyRole(ADMIN.name(),ADMINTRAINEE.name())
                         .anyRequest()
                         .authenticated())
-                .httpBasic();
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .permitAll()
+                        .defaultSuccessUrl("/home",true))
+                .rememberMe(rememberMe -> rememberMe
+                        .key("This is very HOT!")
+                        .tokenValiditySeconds(7 * 24 * 60 * 60))
+                .logout(logout ->logout
+                        .logoutUrl("/logout")
+//                        .logoutRequestMatcher(new AntPathRequestMatcher("/login","GET"))
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID", "remember-me")
+                        .logoutSuccessUrl("/login"));
         return http.build();
     }
 }

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Home</title>
+  <style>
+    /* استایل کلی */
+    body {
+      font-family: 'Arial', sans-serif;
+      background-image: url('https://images.unsplash.com/photo-1512428197675-daae5d4e1e43?q=80&w=1473&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .home-container {
+      text-align: center;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .home-container h1 {
+      color: #333;
+      font-size: 28px;
+    }
+
+    .home-container p {
+      margin: 20px 0;
+      font-size: 16px;
+      color: #666;
+    }
+
+    .home-container a {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: linear-gradient(90deg, #74ebd5, #ACB6E5);
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .home-container a:hover {
+      transform: scale(1.05);
+      background: linear-gradient(90deg, #ACB6E5, #74ebd5);
+    }
+  </style>
+</head>
+<body>
+<div class="home-container">
+  <h1>Welcome, <span th:text="Ali">User</span>!</h1>
+  <p>You have successfully logged in to the system.</p>
+  <a th:href="@{/logout}">Logout</a>
+</div>
